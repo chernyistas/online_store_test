@@ -1,0 +1,245 @@
+[
+{
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+        "name": "Озу",
+        "description": "Оперативная память"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 6,
+    "fields": {
+        "name": "Процессоры",
+        "description": "Комплектующие"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 7,
+    "fields": {
+        "name": "Видеокарты",
+        "description": "GPU"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 8,
+    "fields": {
+        "name": "Материнские платы",
+        "description": "Основные платы"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 9,
+    "fields": {
+        "name": "Клавиатуры",
+        "description": "Keyboards"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 10,
+    "fields": {
+        "name": "SSD",
+        "description": "Накопители"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+        "name": "AMD 9800 3D",
+        "description": "Gaming CPU",
+        "image": "",
+        "category": 6,
+        "price": "50000.00",
+        "created_at": "2026-01-17T15:22:43.824Z",
+        "updated_at": "2026-01-17T15:22:43.824Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+        "name": "Intel i9",
+        "description": null,
+        "image": "",
+        "category": 6,
+        "price": "75000.00",
+        "created_at": "2026-01-17T15:23:43.078Z",
+        "updated_at": "2026-01-17T15:23:43.078Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+        "name": "AMD 7800 3D",
+        "description": "Популярный процессор среди геймеров",
+        "image": "",
+        "category": 6,
+        "price": "35000.00",
+        "created_at": "2026-01-17T15:25:18.794Z",
+        "updated_at": "2026-01-17T15:25:18.794Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+        "name": "GeForce RTX 5070 Ti",
+        "description": "Популярная среди геймеров видеокарта",
+        "image": "",
+        "category": 7,
+        "price": "105000.00",
+        "created_at": "2026-01-17T15:42:50.031Z",
+        "updated_at": "2026-01-17T15:42:50.031Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 6,
+    "fields": {
+        "name": "GeForce RTX 5090",
+        "description": "Топовая видеокарта",
+        "image": "",
+        "category": 7,
+        "price": "350000.00",
+        "created_at": "2026-01-17T15:44:27.019Z",
+        "updated_at": "2026-01-17T15:44:27.019Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 7,
+    "fields": {
+        "name": "GeForce RTX 5060",
+        "description": "Видеокарта для гейминга",
+        "image": "",
+        "category": 7,
+        "price": "35000.00",
+        "created_at": "2026-01-17T15:46:19.840Z",
+        "updated_at": "2026-01-17T15:46:19.840Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 8,
+    "fields": {
+        "name": "X870 TOMOHAWK",
+        "description": "Материнка для гейминга, с потенциалом рагона",
+        "image": "",
+        "category": 8,
+        "price": "31000.00",
+        "created_at": "2026-01-17T15:50:53.363Z",
+        "updated_at": "2026-01-17T15:50:53.363Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 9,
+    "fields": {
+        "name": "X870E HERO",
+        "description": "Топовая материнка для гейминга",
+        "image": "",
+        "category": 8,
+        "price": "70500.00",
+        "created_at": "2026-01-17T15:52:30.840Z",
+        "updated_at": "2026-01-17T15:52:30.840Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 10,
+    "fields": {
+        "name": "A620MS",
+        "description": "Бюджетная видеокарта",
+        "image": "",
+        "category": 8,
+        "price": "7500.00",
+        "created_at": "2026-01-17T15:54:15.791Z",
+        "updated_at": "2026-01-17T15:59:50.525Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 11,
+    "fields": {
+        "name": "AULA F75",
+        "description": "Клавиатура проводная + беспрводная",
+        "image": "",
+        "category": 9,
+        "price": "5000.00",
+        "created_at": "2026-01-17T16:08:30.278Z",
+        "updated_at": "2026-01-17T16:08:30.278Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 12,
+    "fields": {
+        "name": "MX Key S",
+        "description": "Клавиатура топовая беспрводная",
+        "image": "",
+        "category": 9,
+        "price": "12000.00",
+        "created_at": "2026-01-17T16:10:09.904Z",
+        "updated_at": "2026-01-17T16:10:09.904Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 13,
+    "fields": {
+        "name": "DEXP K5003BU",
+        "description": "Клавиатура прводная бюджетная",
+        "image": "",
+        "category": 9,
+        "price": "850.00",
+        "created_at": "2026-01-17T16:11:56.702Z",
+        "updated_at": "2026-01-17T16:11:56.702Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 16,
+    "fields": {
+        "name": "Samsung 990 PRO",
+        "description": "2000 ГБ M.2 NVMe",
+        "image": "",
+        "category": 10,
+        "price": "28000.00",
+        "created_at": "2026-01-17T16:18:39.329Z",
+        "updated_at": "2026-01-17T16:18:39.329Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 17,
+    "fields": {
+        "name": "Kingstom kc 3000",
+        "description": "4000 ГБ M.2 NVMe",
+        "image": "",
+        "category": 10,
+        "price": "48000.00",
+        "created_at": "2026-01-17T16:19:40.808Z",
+        "updated_at": "2026-01-17T16:19:40.808Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 18,
+    "fields": {
+        "name": "Patriot VP 4300",
+        "description": "1000 ГБ M.2 NVMe",
+        "image": "",
+        "category": 10,
+        "price": "18000.00",
+        "created_at": "2026-01-17T16:21:13.192Z",
+        "updated_at": "2026-01-17T16:21:13.192Z"
+    }
+}
+]

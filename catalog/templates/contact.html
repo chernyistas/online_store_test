@@ -11,57 +11,103 @@
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
     <h5 class="my-0 mr-md-auto font-weight-normal">Online store</h5>
     <nav class="ms-5">
-        <a class="p-2 btn btn-outline-primary" href="/">Каталог</a>
-        <a class="p-2 btn btn-outline-primary" href="/contacts/">Контакты</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:home' %}">Каталог</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:contact' %}">Контакты</a>
     </nav>
 </div>
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">Контакты</h1>
 </div>
+
 <div class="container">
     <div class="row text-start">
         <div class="col-lg-9 col-md-6 col-sm-12">
             <div class="card mb-4 box-shadow">
                 <div class="card-body">
-                    <table class="table table-striped">
-                        <tr>
-                            <td class="w-25">Страна</td>
-                            <td>Россия</td>
-                        </tr>
-                        <tr>
-                            <td class="w-25">ИНН</td>
-                            <td>601*******</td>
-                        </tr>
-                        <tr>
-                            <td class="w-25">Адрес</td>
-                            <td>Московская Область,Мытищи,улица Самая Хорошая</td>
-                        </tr>
-                    </table>
+                    {# Контакты из модели ContactInfo (заполнены через админку) #}
+                    {% if contacts %}
+                        <h4 class="mb-3">Наши контактные данные</h4>
+                        <table class="table table-striped">
+                            {% for c in contacts %}
+                                <tr>
+                                    <td class="w-25">Название</td>
+                                    <td>{{ c.name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Email</td>
+                                    <td>{{ c.email }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Телефон</td>
+                                    <td>{{ c.phone }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Адрес</td>
+                                    <td>{{ c.address }}</td>
+                                </tr>
+                                {% if not forloop.last %}
+                                    <tr><td colspan="2"><hr></td></tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <table class="table table-striped">
+                            <tr>
+                                <td class="w-25">Страна</td>
+                                <td>Россия</td>
+                            </tr>
+                            <tr>
+                                <td class="w-25">ИНН</td>
+                                <td>601*******</td>
+                            </tr>
+                            <tr>
+                                <td class="w-25">Адрес</td>
+                                <td>Московская область, Мытищи, улица Самая Хорошая</td>
+                            </tr>
+                        </table>
+                    {% endif %}
                 </div>
             </div>
         </div>
+
         <div class="col-lg-3 col-md-6 col-sm-12">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
                     <h4 class="my-0 font-weight-normal">Свяжитесь с нами</h4>
                 </div>
                 <div class="card-body">
+                    {# ВЫВОД FLASH-СООБЩЕНИЙ #}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
                     <form method="post" action="" class="form-floating">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="name">Имя</label>
-                            <input type="text" name="name" class="form-control" id="name" placeholder="Ваше имя" required>
+                            <input type="text" name="name" class="form-control"
+                                   id="name" placeholder="Ваше имя" required>
                         </div>
                         <div class="mb-3">
                             <label for="phone">Телефон</label>
-                            <input type="text" name="phone" class="form-control" id="phone" placeholder="Контактный телефон" required>
+                            <input type="text" name="phone" class="form-control"
+                                   id="phone" placeholder="Контактный телефон">
                         </div>
                         <div class="mb-3">
                             <label for="message">Сообщение</label>
-                            <textarea type="text" name="message" class="form-control" id="message" placeholder="Контактный телефон" required></textarea>
+                            <textarea name="message" class="form-control"
+                                      id="message" placeholder="Ваше сообщение"
+                                      required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Отправить</button>
+                        <button type="submit"
+                                class="btn btn-lg btn-block btn-outline-primary">
+                            Отправить
+                        </button>
                     </form>
                 </div>
             </div>
@@ -98,6 +144,7 @@
         </div>
     </footer>
 </div>
+
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
