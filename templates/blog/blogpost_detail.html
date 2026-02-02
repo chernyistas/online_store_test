@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ blog.title }} - Блог - Online store{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Заголовок и мета-информация -->
+            <h1 class="mb-3">{{ blog.title }}</h1>
+
+            <div class="mb-4 text-muted">
+                <small>
+                    Опубликовано: {{ blog.created_at|date:"d.m.Y H:i" }} |
+                    Просмотров: {{ blog.views_count }}
+                </small>
+                {% if blog.is_published %}
+                    <span class="badge bg-success ms-2">Опубликовано</span>
+                {% else %}
+                    <span class="badge bg-warning ms-2">Черновик</span>
+                {% endif %}
+            </div>
+
+            <!-- Изображение -->
+            {% if blog.preview %}
+                <img src="{{ blog.preview.url }}"
+                     alt="{{ blog.title }}"
+                     class="img-fluid rounded mb-4"
+                     style="max-width: 100%; height: auto;">
+            {% else %}
+                <div class="alert alert-secondary mb-4">
+                    Изображение отсутствует
+                </div>
+            {% endif %}
+
+            <!-- Содержимое -->
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text">{{ blog.content|linebreaks }}</p>
+                </div>
+            </div>
+
+            <!-- Кнопки управления -->
+            <div class="mt-4">
+                <a href="{% url 'blog:blogpost_update' blog.pk %}" class="btn btn-warning">
+                    Редактировать
+                </a>
+                <a href="{% url 'blog:blogpost_delete' blog.pk %}" class="btn btn-danger">
+                    Удалить
+                </a>
+                <a href="{% url 'blog:blogpost_list' %}" class="btn btn-outline-secondary">
+                    ← Назад к списку статей
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

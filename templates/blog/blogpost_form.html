@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if object %}Редактирование{% else %}Создание{% endif %} статьи - Online store
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        {% if object %}
+                            Редактирование статьи "{{ object.title }}"
+                        {% else %}
+                            Создание новой статьи
+                        {% endif %}
+                    </h4>
+                </div>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="card-body">
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <strong>Пожалуйста, исправьте ошибки:</strong>
+                                {{ form.errors }}
+                            </div>
+                        {% endif %}
+
+                        {{ form.as_p }}
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">
+                                {% if object %}
+                                    Сохранить изменения
+                                {% else %}
+                                    Создать статью
+                                {% endif %}
+                            </button>
+
+                            <a href="{% if object %}{% url 'blog:blogpost_detail' object.pk %}
+                            {% else %}{% url 'blog:blogpost_list' %}{% endif %}" class="btn btn-secondary">
+                                Отмена
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Подсказки -->
+            <div class="mt-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Подсказки:</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li><small class="text-muted">Поле "Заголовок" Обязательно</small></li>
+                            <li><small class="text-muted">Для публикации отметьте "Опубликовано"</small></li>
+                            <li><small class="text-muted">Изображение улучшает восприятие статьи</small></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

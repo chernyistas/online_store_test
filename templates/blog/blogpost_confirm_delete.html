@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление статьи - Online store{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="card-body">
+                            <div class="alert alert-danger">
+                                <strong>Вы уверены, что хотите удалить запись блога: {{ object.title }}</strong>
+                            </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                            <a href="{% url 'blog:blogpost_list' %}" class="btn btn-secondary">Отмена</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

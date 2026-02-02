@@ -1,12 +1,15 @@
 from django.urls import path
 
-from . import views
+from .views import (ContactView, ProductCreateView, ProductDeleteView, ProductDetailView, ProductListView,
+                    ProductUpdateView)
 
 app_name = "catalog"
 
 urlpatterns = [
-    path("", views.home, name="home"),
-    path("contacts/", views.contact, name="contact"),
-    path("product/<int:pk>/", views.product_detail, name="product_detail"),
-    path("product/create/", views.product_create, name="product_create"),
+    path("", ProductListView.as_view(), name="home"),
+    path("contacts/", ContactView.as_view(), name="contact"),
+    path("product/<int:pk>/", ProductDetailView.as_view(), name="product_detail"),
+    path("product/create/", ProductCreateView.as_view(), name="product_create"),
+    path("product/<int:pk>/update/", ProductUpdateView.as_view(), name="product_update"),
+    path("product/<int:pk>/delete/", ProductDeleteView.as_view(), name="product_delete"),
 ]

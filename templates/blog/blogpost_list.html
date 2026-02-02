@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Блог - Online store{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Заголовок и кнопка создания -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Статьи блога</h1>
+        <a href="{% url 'blog:blogpost_create' %}" class="btn btn-primary">
+            + Новая статья
+        </a>
+    </div>
+
+    <!-- Список статей -->
+    {% if blogs %}
+        <div class="row">
+            {% for blog in blogs %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 box-shadow">
+                    <!-- Изображение превью -->
+                    {% if blog.preview %}
+                    <img src="{{ blog.preview.url }}"
+                         class="card-img-top"
+                         alt="{{ blog.title }}"
+                         style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
+                         style="height: 200px;">
+                        <span class="text-muted">Нет изображения</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body d-flex flex-column">
+                        <!-- Заголовок и статус -->
+                        <h5 class="card-title">{{ blog.title }}</h5>
+
+                        <!-- Статус публикации -->
+                        <div class="mb-2">
+                            {% if blog.is_published %}
+                                <span class="badge bg-success">Опубликовано</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Черновик</span>
+                            {% endif %}
+                            <span class="badge bg-secondary ms-1">
+                                👁 {{ blog.views_count }}
+                            </span>
+                        </div>
+
+                        <!-- Краткое содержание -->
+                        <p class="card-text flex-grow-1">
+                            {{ blog.content|truncatechars:150|default:"Описание отсутствует" }}
+                        </p>
+
+                        <!-- Дата и кнопка -->
+                        <div class="mt-auto">
+                            <small class="text-muted d-block mb-2">
+                                {{ blog.created_at|date:"d.m.Y H:i" }}
+                            </small>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'blog:blogpost_detail' blog.pk %}"
+                                   class="btn btn-outline-primary btn-sm flex-grow-1">
+                                    Читать
+                                </a>
+                                {% if not blog.is_published %}
+                                <a href="{% url 'blog:blogpost_update' blog.pk %}"
+                                   class="btn btn-outline-warning btn-sm">
+                                    ✏️
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Пагинация-->
+        {% if is_paginated %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                    </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo;&raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+
+    {% else %}
+    <!-- Нет статей -->
+    <div class="text-center py-5">
+        <h3 class="text-muted">Пока нет статей</h3>
+        <p class="text-muted">Создайте первую статью, нажав кнопку выше</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

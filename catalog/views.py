@@ -1,34 +1,35 @@
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from django.contrib import messages
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import QuerySet
+from django.forms.models import BaseModelForm
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 
 from catalog.models import ContactInfo, Product
 
 from .forms import ProductForm
 
 
-def home(request: HttpRequest) -> HttpResponse:
-    """Отображает главную страницу каталога."""
-    all_products = Product.objects.order_by("-created_at")
-    paginator = Paginator(all_products, 6)
-    page_number = request.GET.get("page", 1)
+class ProductListView(ListView):
+    """Отображает главную страницу каталога с товарами"""
 
-    try:
-        page_obj = paginator.page(page_number)
-    except PageNotAnInteger:
-        page_obj = paginator.page(1)
-    except EmptyPage:
-        page_obj = paginator.page(paginator.num_pages)
-
-    return render(request, "catalog/home.html", {"page_obj": page_obj})
+    model = Product
+    template_name = "catalog/home.html"
+    context_object_name = "products"
+    paginate_by = 6
+    ordering = ["-created_at"]
 
 
-def contact(request: HttpRequest) -> HttpResponse:
-    """Страница контактов с формой обратной связи."""
-    if request.method == "POST":
+class ContactView(TemplateView):
+    """Страница контактов с формой обратной связи"""
+
+    template_name = "catalog/contact.html"
+
+    def post(self, request: HttpRequest, *args, **kwargs):
+        """Обрабатывает POST-запрос формы контактов"""
         name: Optional[str] = request.POST.get("name")
         phone: Optional[str] = request.POST.get("phone")
         message: Optional[str] = request.POST.get("message")
@@ -43,33 +44,60 @@ def contact(request: HttpRequest) -> HttpResponse:
             contact_phone = phone or "email"
             messages.success(request, f"Спасибо {name}! Свяжемся по {contact_phone}")
             return redirect("catalog:contact")
+        return self.get(request, *args, **kwargs)
 
-    context = {
-        "store_contacts": {
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        """Добавляет контактные данные в контекст"""
+        context = super().get_context_data(**kwargs)
+        context["store_contacts"] = {
             "name": "Online Store",
             "email": "feedback@store.ru",
             "phone": "8-098-765-43-21",
             "address": "Московская область, Мытищи, улица Самая Хорошая",
-        },
-    }
-    return render(request, "catalog/contact.html", context)
+        }
+        return context
 
 
-def product_detail(request: HttpRequest, pk: int) -> HttpResponse:
-    """отображает страницу с подробной информацией о товаре"""
-    product = get_object_or_404(Product, pk=pk)
-    context = {"product": product}
-    return render(request, "catalog/product_detail.html", context)
+class ProductDetailView(DetailView):
+    """Отображает страницу с подробной информацией о товаре"""
+
+    model = Product
+    template_name = "catalog/product_detail.html"
+    context_object_name = "product"
+
+    def get_object(self, queryset: QuerySet = None) -> Product:
+        """Получает объект товара по ID"""
+        return super().get_object(queryset)
 
 
-def product_create(request: HttpRequest) -> HttpResponse:
-    """Создание нового продукта через форму"""
-    if request.method == "POST":
-        form = ProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            product = form.save()
-            return redirect("catalog:product_detail", pk=product.pk)
-    else:
-        form = ProductForm()
+class ProductCreateView(CreateView):
+    """Создание нового продукта"""
 
-    return render(request, "catalog/product_form.html", {"form": form})
+    model = Product
+    form_class = ProductForm
+    template_name = "catalog/product_form.html"
+
+    def get_success_url(self) -> str:
+        """Возвращает URL для перенаправления после успешного создания"""
+        return reverse_lazy("catalog:product_detail", kwargs={"pk": self.object.pk})
+
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        """Обрабатывает валидную форму"""
+        return super().form_valid(form)
+
+
+class ProductUpdateView(UpdateView):
+    """Редактирование продукта"""
+
+    model = Product
+    form_class = ProductForm
+    template_name = "catalog/product_form.html"
+    success_url = reverse_lazy("catalog:home")
+
+
+class ProductDeleteView(DeleteView):
+    """Удаление продукта"""
+
+    model = Product
+    template_name = "catalog/product_confirm_delete.html"
+    success_url = reverse_lazy("catalog:home")
