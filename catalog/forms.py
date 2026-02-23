@@ -69,7 +69,7 @@ class ProductForm(forms.ModelForm):
     def clean_image(self):
         image = self.cleaned_data.get("image")
 
-        if image and hasattr(image, 'content_type'):
+        if image and hasattr(image, "content_type"):
             content_type = image.content_type
             if content_type not in ("image/png", "image/jpeg"):
                 raise ValidationError("Поддерживаются форматы только JPEG и PNG")

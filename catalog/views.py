@@ -1,6 +1,7 @@
 from typing import Any, Dict, Optional
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
 from django.forms.models import BaseModelForm
 from django.http import HttpRequest, HttpResponse
@@ -70,7 +71,7 @@ class ProductDetailView(DetailView):
         return super().get_object(queryset)
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     """Создание нового продукта"""
 
     model = Product
@@ -86,7 +87,7 @@ class ProductCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     """Редактирование продукта"""
 
     model = Product
@@ -95,7 +96,7 @@ class ProductUpdateView(UpdateView):
     success_url = reverse_lazy("catalog:home")
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     """Удаление продукта"""
 
     model = Product
