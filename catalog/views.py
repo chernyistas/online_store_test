@@ -2,6 +2,7 @@ from typing import Any, Dict, Optional
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.db.models import QuerySet
 from django.forms.models import BaseModelForm
 from django.http import HttpRequest, HttpResponse
@@ -84,6 +85,11 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         """Обрабатывает валидную форму"""
+        product = form.save(commit=False)
+        user = self.request.user
+        product.owner = user
+        product.save()
+
         return super().form_valid(form)
 
 
@@ -94,6 +100,15 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ProductForm
     template_name = "catalog/product_form.html"
     success_url = reverse_lazy("catalog:home")
+    permission_required = "catalog.can_unpublish_product"
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+
+        if not obj.owner == self.request.user:
+            raise PermissionDenied
+
+        return obj
 
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
@@ -102,3 +117,11 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = "catalog/product_confirm_delete.html"
     success_url = reverse_lazy("catalog:home")
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+
+        if not (obj.owner == self.request.user or self.request.user.has_perm("catalog.can_unpublish_product")):
+            raise PermissionDenied
+
+        return obj
