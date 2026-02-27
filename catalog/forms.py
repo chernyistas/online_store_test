@@ -26,7 +26,7 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ["name", "description", "image", "category", "price"]
+        exclude = ["owner"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -78,3 +78,9 @@ class ProductForm(forms.ModelForm):
                 raise ValidationError("Файл слишком большой")
 
         return image
+
+
+class ProductModeratorForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ("description", "name")
