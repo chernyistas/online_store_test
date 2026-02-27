@@ -169,8 +169,10 @@ class CategoryProductListView(ListView):
     def get_context_data(self, **kwargs):
         """Добавляем в шаблон название категории"""
         context = super().get_context_data(**kwargs)
-        category_id = self.self.kwargs.get("pk")
+        category_id = self.kwargs.get("pk")
         category = get_object_or_404(Category, pk=category_id)
+
+        context["category"] = category
 
         return context
 

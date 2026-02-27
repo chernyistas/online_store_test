@@ -21,9 +21,9 @@
                     <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                 {% endif %}
                 <div class="card-body">
-                    <h5 class="card-body">{{ product.name }}</h5>
+                    <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text">{{ product.price }} Руб.</p>
-                    <a href="{% url 'catalog:product_detail_detail' product.pk %}" class="btn btn-primary">Подробнее</a>
+                    <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-primary">Подробнее</a>
                 </div>
             </div>
         </div>
