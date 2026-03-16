@@ -42,12 +42,16 @@
 
             <!-- Кнопки управления -->
             <div class="mt-4">
-                <a href="{% url 'blog:blogpost_update' blog.pk %}" class="btn btn-warning">
-                    Редактировать
-                </a>
-                <a href="{% url 'blog:blogpost_delete' blog.pk %}" class="btn btn-danger">
-                    Удалить
-                </a>
+                {% if perms.blog.add_blogpost %}
+                    <a href="{% url 'blog:blogpost_update' blog.pk %}" class="btn btn-warning">
+                        Редактировать
+                    </a>
+                {% endif %}
+                {% if perms.blog.delete_blogpost %}
+                    <a href="{% url 'blog:blogpost_delete' blog.pk %}" class="btn btn-danger">
+                        Удалить
+                    </a>
+                {% endif %}
                 <a href="{% url 'blog:blogpost_list' %}" class="btn btn-outline-secondary">
                     ← Назад к списку статей
                 </a>

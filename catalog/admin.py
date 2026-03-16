@@ -13,17 +13,9 @@ class AdminCategory(admin.ModelAdmin):
 
 @admin.register(Product)
 class AdminProduct(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "name",
-        "price",
-        "category",
-    )
+    list_display = ("id", "name", "price", "category", "is_published", "owner")
     list_filter = ("category",)
-    search_fields = (
-        "name",
-        "description",
-    )
+    search_fields = ("name", "description", "is_published", "owner")
 
 
 @admin.register(ContactInfo)

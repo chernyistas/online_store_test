@@ -94,7 +94,10 @@
                             <strong>{{ product.price }} ₽</strong>
                         </p>
                         <p class="card-text mb-1">
-                            Категория: {{ product.category.name }}
+                            Категория:
+                            <a href="{% url 'catalog:category_products' product.category.pk %}">
+                                {{ product.category.name }}
+                            </a>
                         </p>
                         <p class="card-text">
                             {{ product.description|truncatechars:100|default:"Описание появится позже" }}

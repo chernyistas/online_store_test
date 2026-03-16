@@ -7,9 +7,11 @@
     <!-- Заголовок и кнопка создания -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Статьи блога</h1>
-        <a href="{% url 'blog:blogpost_create' %}" class="btn btn-primary">
-            + Новая статья
-        </a>
+        {% if perms.blog.add_blogpost %}
+            <a href="{% url 'blog:blogpost_create' %}" class="btn btn-primary">
+                + Новая статья
+            </a>
+        {% endif %}
     </div>
 
     <!-- Список статей -->
@@ -62,7 +64,7 @@
                                    class="btn btn-outline-primary btn-sm flex-grow-1">
                                     Читать
                                 </a>
-                                {% if not blog.is_published %}
+                                {% if not blog.is_published and perms.blog.change_blogpost %}
                                 <a href="{% url 'blog:blogpost_update' blog.pk %}"
                                    class="btn btn-outline-warning btn-sm">
                                     ✏️
