@@ -95,9 +95,13 @@
                         </p>
                         <p class="card-text mb-1">
                             Категория:
-                            <a href="{% url 'catalog:category_products' product.category.pk %}">
-                                {{ product.category.name }}
-                            </a>
+                            {% if product.category %}
+                                <a href="{% url 'catalog:category_products' product.category.pk %}">
+                                    {{ product.category.name }}
+                                </a>
+                            {% else %}
+                                Без категории
+                            {% endif %}
                         </p>
                         <p class="card-text">
                             {{ product.description|truncatechars:100|default:"Описание появится позже" }}
