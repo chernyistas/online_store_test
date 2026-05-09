@@ -45,17 +45,15 @@ jobs:
             cd ${{ secrets.DEPLOY_DIR }}
             
             if [ ! -d "venv" ]; then
-              python3 -m venv venv
+              /usr/bin/python3 -m venv venv
             fi
-          
-            . venv/bin/activate
-    
-            /usr/bin/pip3 install --upgrade pip
-            /usr/bin/pip3 install -r requirements.txt
-    
-            /usr/bin/python3 manage.py migrate --noinput
-      
-            /usr/bin/python3 manage.py collectstatic --noinput
+            
+            /usr/bin/python3 -m venv venv --clear
+            ./venv/bin/pip install --upgrade pip
+            ./venv/bin/pip install -r requirements.txt
+            
+            ./venv/bin/python manage.py migrate --noinput
+            ./venv/bin/python manage.py collectstatic --noinput
           EOF
       - name: Restart application
         run: |
@@ -65,7 +63,6 @@ jobs:
           
             pkill -f "gunicorn" || true
           
-            nohup gunicorn config.wsgi:application --bind 0.0.0.0:8000 > /tmp/gunicorn.log 2>&1 &
-          
+            ./venv/bin/gunicorn config.wsgi:application --bind 0.0.0.0:8000 --daemon          
             echo "✅ Application restarted"
           EOF
