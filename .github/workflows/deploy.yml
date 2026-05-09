@@ -39,6 +39,15 @@ jobs:
             --exclude 'staticfiles' \
             ./ ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }}
 
+      - name: Install system dependencies on server
+        run: |
+         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+           sudo apt update 
+           sudo apt install -y gcc libpq-dev python3-dev
+           echo "✅ System dependencies installed"
+         EOF
+         
+
       - name: Install dependencies and  migrate
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
